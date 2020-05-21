@@ -1,0 +1,82 @@
+<div class="row">
+    <div class="col-md-12 offset-md-2 bordering-side form-bg-light">
+        <h3 class="title">Enter the details to add an apartment</h3>
+        <br>
+
+        <form [formGroup]="apartmentAddForm" (ngSubmit)="AddApartment()" #addApartmentForm="ngForm">
+            <table class="table table-condensed">
+                <tr>
+                    <th>Apartment Type: </th>
+                    <td>
+                        <select class="form-control" formControlName="aptType" #aptType
+                            (change)="typeChanged(aptType.value)" required>
+                            <option value="1B1Bath">1B1Bath</option>
+                            <option value="2B1Bath">2B1Bath</option>
+                            <option value="2B2Bath">2B2Bath</option>
+                        </select>
+
+                        <div class="field-error-message"
+                            *ngIf="apartmentAddForm.get('aptType').invalid && apartmentAddForm.get('aptType').touched">
+                            Apartment Type is required.
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Apartment Level: </th>
+                    <td>
+                        <input type="number" class="form-control" formControlName="aptLevel" min=1 required />
+                        <div class="field-error-message"
+                            *ngIf="apartmentAddForm.get('aptLevel').invalid && apartmentAddForm.get('aptLevel').touched">
+                            Apartment Level is required and should be a greater than or equal to 1
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Apartment Flooring: </th>
+                    <td>
+                        <select class="form-control" formControlName="typeOfFlooring" required>
+                            <option value="Laminate">Laminate</option>
+                            <option value="Carpet">Carpet</option>
+                            <option value="Wood">Wood</option>
+                            <option value="Tile">Tile</option>
+                            <option value="Linoleum">Linoleum</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Apartment Availability: </th>
+                    <div class="row">
+                        <td class="col">
+                            <input type="radio" formControlName="availability" name="availability"
+                                id="available" value="1">
+                            <label for="available">Available</label>
+                        </td>
+                        <td class="col">
+                            <input type="radio" formControlName="availability" name="availability"
+                                id="unavailable" value="0">
+                            <label for="unavailable">Unavailable</label>
+                        </td>
+                    </div>
+                </tr>
+            </table>
+
+            <div>
+                <div class="row">
+                    <button [disabled]="!apartmentAddForm.valid || apartmentAddForm.pristine"
+                        class="col-md-4 offset-md-4 btn btn-success form-button">
+                        Add Apartment
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div *ngIf="successMessage!=null || errorMessage!=null">
+            <div class="success-message text-center">{{successMessage}}</div>
+            <div class="error-message text-center">{{errorMessage}}</div>
+        </div>
+
+    </div>
+</div>

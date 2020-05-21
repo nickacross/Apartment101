@@ -1,0 +1,47 @@
+<div>
+    <div class="text-center table-responsive table-border">
+        <h3 class="title">Applications</h3>
+
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    <th style="text-align: center">Application Id</th>
+                    <th style="text-align: center">User Email</th>
+                    <th style="text-align: center">Apartment Number</th>
+                    <th style="text-align: center">Number of Rooms</th>
+                    <th style="text-align: center">Number of Baths</th>
+                    <th style="text-align: center">Flooring</th>
+                    <th style="text-align: center">Level</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <ng-container *ngFor="let apt of apartmentList">
+                    <ng-container *ngIf="apt.availability == 1">
+                        <ng-container *ngFor="let app of apt.appList">
+                            <tr *ngIf="app.status == 0">
+                                <td>{{app.appId}}</td>
+                                <td>{{app.user.email}}</td>
+                                <td>{{apt.aptNo}}</td>
+                                <td>{{apt.noOfRooms}}</td>
+                                <td>{{apt.noOfBaths}}</td>
+                                <td>{{apt.typeOfFlooring}}</td>
+                                <td>{{apt.aptLevel}}</td>
+                                <td>
+                                    <button class="btn btn-primary" (click)='approveApplication(app.appId)'>
+                                        Approve Application</button>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
+            </tbody>
+
+        </table>
+    </div>
+
+    <div *ngIf="successMessage!=null || errorMessage!=null">
+        <div class="success-message text-center">{{successMessage}}</div>
+        <div class="error-message text-center">{{errorMessage}}</div>
+    </div>
+</div>

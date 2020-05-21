@@ -1,0 +1,46 @@
+<div>
+    <div class="text-center table-responsive table-border">
+        <h3 class="title">Apartments</h3>
+
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    <th style="text-align: center">Apartment Number</th>
+                    <th style="text-align: center">Type</th>
+                    <th style="text-align: center">Number of Rooms</th>
+                    <th style="text-align: center">Number of Baths</th>
+                    <th style="text-align: center">Flooring</th>
+                    <th style="text-align: center">Level</th>
+                    <th style="text-align: center">Availability</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let apt of apartmentList">
+                    <td>{{apt.aptNo}}</td>
+                    <td>{{apt.aptType}}</td>
+                    <td>{{apt.noOfRooms}}</td>
+                    <td>{{apt.noOfBaths}}</td>
+                    <td>{{apt.typeOfFlooring}}</td>
+                    <td>{{apt.aptLevel}}</td>
+                    <td *ngIf="apt.availability == 0; else elseContent">
+                        Unavailable
+                    </td>
+                    <ng-template #elseContent>
+                        <td>Available</td>
+                    </ng-template>
+                    <td>
+                        <button class="btn btn-primary" (click)='changeAvailability(apt.aptNo, apt.availability)'>
+                            Change Availability</button>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+    <div *ngIf="successMessage!=null || errorMessage!=null">
+        <div class="success-message text-center">{{successMessage}}</div>
+        <div class="error-message text-center">{{errorMessage}}</div>
+    </div>
+</div>

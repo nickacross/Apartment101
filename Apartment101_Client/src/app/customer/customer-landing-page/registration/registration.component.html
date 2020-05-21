@@ -1,0 +1,96 @@
+<div class="page-top-offset"></div>
+<div class="row">
+    <div class="container-fluid">
+        <div class="col-md-4 offset-md-4">
+            <div class="form-bg-light">
+
+                <h3 class="title">Customer Registration</h3>
+                <form [formGroup]="registerUserForm" (ngSubmit)="registerUser()">
+                    <!--(ngSubmit)="registerUser()"-->
+
+
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input class="form-control" formControlName="username" placeholder="Name" id="username" />
+
+                        <div *ngIf="registerUserForm.controls.username.invalid
+                                            && registerUserForm.controls.username.touched">
+
+                            <div  class="field-error-message" *ngIf="registerUserForm.controls.username.hasError('required')">
+                                Name is Mandatory
+                            </div>
+                            <div class="field-error-message" *ngIf="registerUserForm.controls.username.dirty && registerUserForm.controls.username.hasError('usernamePatternError')">
+                                Name pattern is invalid
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Id</label>
+                        <input class="form-control" formControlName="email" placeholder="Email Id" id="email" />
+                        <div *ngIf="registerUserForm.controls.email.invalid
+                                            && registerUserForm.controls.email.touched">
+
+                            <div  class="field-error-message" *ngIf="registerUserForm.controls.email.hasError('required')">
+                                Email Id is Mandatory
+                            </div>
+                            <div  class="field-error-message" *ngIf="registerUserForm.controls.email.dirty && registerUserForm.controls.email.hasError('emailPatternError')">
+                                Email Id pattern is invalid
+                            </div>
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" formControlName="password" placeholder="Password" id="password" />
+                        <div *ngIf="registerUserForm.controls.password.invalid
+                        && registerUserForm.controls.password.touched">
+
+                            <div  class="field-error-message" *ngIf="registerUserForm.controls.password.hasError('required')">
+                                Password is Mandatory
+                            </div>
+                            <div  class="field-error-message" *ngIf="registerUserForm.controls.password.dirty && registerUserForm.controls.password.hasError('passwordPatternError')">
+                                Password pattern is invalid
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" class="form-control" formControlName="confirmPassword" placeholder="Confirm Password" id="confirmPassword"
+                        />
+                        <div *ngIf="registerUserForm.controls.confirmPassword.invalid
+                            && registerUserForm.controls.confirmPassword.touched">
+
+                            <div  class="field-error-message" *ngIf="registerUserForm.controls.confirmPassword.hasError('required')">
+                                Please re-enter the password
+                            </div>
+                            <div  class="field-error-message" *ngIf="registerUserForm.controls.password.value != registerUserForm.controls.confirmPassword.value">
+                                Passwords do not match!!
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <button [disabled]="!registerUserForm.valid" class="col-md-4 offset-md-1 btn btn-info">
+                            Register
+                        </button>
+                        <button type="reset" [disabled]="registerUserForm.pristine" class="col-md-4 offset-md-2 btn btn-warning">
+                            Reset
+                        </button>
+
+                    </div>
+                </form>
+                <h5 class="success-message">{{successMessage}}</h5>
+                <h5 class="error-message">{{errorMessage}}</h5>
+                <br/>
+            <div class="text-info">Are you a registered user? <a routerLink="../login">Sign in</a>  </div>
+            
+            </div>
+        </div>
+    </div>
+</div>
