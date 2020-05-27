@@ -1,7 +1,10 @@
 package com.infy.apartment101.dao;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -24,18 +27,18 @@ public class ApplicationDAOImpl implements ApplicationDAO {
 
 	// Allow empty list
 	@Override
-	public List<Application> getAllApplications() throws Exception {
+	public Stream<Application> getAllApplications() throws Exception {
 		List<Application> aList = null;
 		Query q = entityManager.createQuery("SELECT a FROM ApplicationEntity a");
-		List<ApplicationEntity> appEntityList = q.getResultList();
+		Optional<List<ApplicationEntity>> appEntityList = Optional.ofNullable(q.getResultList());
 
-		if (!appEntityList.isEmpty())
+		if (appEntityList.isPresent() && !appEntityList.get().isEmpty())
 			aList = new ArrayList<>();
 
 		Application app = null;
 		User u = null;
 		Apartment apt = null;
-		for (ApplicationEntity appEntity : appEntityList) {
+		for (ApplicationEntity appEntity : appEntityList.get()) {
 			app = new Application();
 			app.setAppId(appEntity.getAppId());
 			app.setStatus(appEntity.getStatus());
@@ -61,7 +64,8 @@ public class ApplicationDAOImpl implements ApplicationDAO {
 			aList.add(app);
 		}
 
-		return aList;
+		// Return stream, sorted by application id
+		return aList.stream().sorted(Comparator.comparing(Application::getAppId));
 	}
 
 	// return 0 if application has been approved, else return status
@@ -69,23 +73,14 @@ public class ApplicationDAOImpl implements ApplicationDAO {
 	public Integer approveApplication(Integer appId) throws Exception {
 		Query q = entityManager.createQuery("SELECT a FROM ApplicationEntity a where a.appId = :appId");
 		q.setParameter("appId", appId);
-		ApplicationEntity aEntity = (ApplicationEntity) q.getSingleResult();
-		if (aEntity.getStatus() == 1)
+		Optional<ApplicationEntity> aEntity = Optional.ofNullable((ApplicationEntity) q.getSingleResult());
+
+		if (aEntity.isPresent() & aEntity.get().getStatus() == 1)
 			return 0;
 
-		aEntity.setStatus(1);
-		entityManager.persist(aEntity);
-		return aEntity.getStatus();
-
-		// ApplicationEntity aEntity =
-		// entityManager.find(ApplicationEntity.class, appId);
-		// Integer result = aEntity.getStatus();
-		// if (result == 1)
-		// return 0;
-		//
-		// aEntity.setStatus(1);
-		// entityManager.persist(aEntity);
-		// return aEntity.getStatus();
+		aEntity.get().setStatus(1);
+		entityManager.persist(aEntity.get());
+		return aEntity.get().getStatus();
 	}
 
 	@Override
@@ -93,7 +88,6 @@ public class ApplicationDAOImpl implements ApplicationDAO {
 		String add = null;
 
 		ApplicationEntity applicationEntity = new ApplicationEntity();
-		// applicationEntity.setAppId(app.getAppId());
 		applicationEntity.setStatus(app.getStatus());
 
 		ApartmentEntity apartmentEntity = new ApartmentEntity();

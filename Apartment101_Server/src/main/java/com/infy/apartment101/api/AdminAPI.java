@@ -52,7 +52,7 @@ public class AdminAPI {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, environment.getProperty(e.getMessage()));
 		}
 	}
-	
+
 	@PostMapping(value = "adminLogin")
 	public ResponseEntity<User> authenticateSeller(@RequestBody User admin) throws Exception {
 		try {

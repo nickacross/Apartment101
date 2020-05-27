@@ -1,3 +1,4 @@
+Apartment API
 post http://localhost:8080/Apartment101_Server/ApartmentAPI/addApartment/
 {
 	 "aptType": "1B1Bath",
@@ -12,15 +13,33 @@ get http://localhost:8080/Apartment101_Server/ApartmentAPI/getAptByAptNo/1
 get http://localhost:8080/Apartment101_Server/ApartmentAPI/getAptByAptNo/2
 
 get http://localhost:8080/Apartment101_Server/ApartmentAPI/getAllApts
+post http://localhost:8080/Apartment101_Server/ApartmentAPI/getApts
 
 get http://localhost:8080/Apartment101_Server/ApartmentAPI/modifyAptAvailability/1/1
 get http://localhost:8080/Apartment101_Server/ApartmentAPI/modifyAptAvailability/1/0
+
+
+Application API
+get http://localhost:8080/Apartment101_Server/ApplicationAPI/allApp/
 
 get http://localhost:8080/Apartment101_Server/ApplicationAPI/approveApplication/3
 get http://localhost:8080/Apartment101_Server/ApplicationAPI/approveApplication/4
 get http://localhost:8080/Apartment101_Server/ApplicationAPI/approveApplication/5
 get http://localhost:8080/Apartment101_Server/ApplicationAPI/approveApplication/6
+post http://localhost:8080/Apartment101_Server/ApplicationAPI/newApp/
+{
+    "status": 0,
+    "apartment": {
+        "aptNo": 1
+    },
+    "user": {
+        "email": "test3@gmail.com",
+        "usertype": "CUSTOMER"
+    }
+}
 
+
+Customer API
 post http://localhost:8080/Apartment101_Server/customer/customerLogin
 {
 	 "email": "test3@gmail.com",
@@ -35,20 +54,8 @@ post http://localhost:8080/Apartment101_Server/customer/registerCustomer/
 	 "userType": "CUSTOMER"
 }
 
-get http://localhost:8080/Apartment101_Server/ApplicationAPI/allApp/
 
-post http://localhost:8080/Apartment101_Server/ApplicationAPI/newApp/
-{
-    "status": 0,
-    "apartment": {
-        "aptNo": 1
-    },
-    "user": {
-        "email": "test3@gmail.com",
-        "usertype": "CUSTOMER"
-    }
-}
-
+Admin API
 post http://localhost:8080/Apartment101_Server/admin/adminLogin/
 {
 	"email":"test1@gmail.com",

@@ -13,7 +13,7 @@ import { User } from 'src/app/shared/models/user';
 })
 export class ViewAvailableApartmentsComponent implements OnInit {
 
-  private _url: string = 'http://localhost:8080/Verizon_Server';
+  private _url: string = 'http://localhost:8080/Apartment101_Server';
 
   private headers = new HttpHeaders({ 'Content-Type': 'text/plain' });
   currentUser: User;

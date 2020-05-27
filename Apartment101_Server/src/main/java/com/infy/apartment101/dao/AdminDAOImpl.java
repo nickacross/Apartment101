@@ -1,6 +1,7 @@
 package com.infy.apartment101.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -19,29 +20,28 @@ public class AdminDAOImpl implements AdminDAO {
 
 	@Override
 	public String getPasswordOfAdmin(String email) {
-
 		String password = null;
+		Optional<UserEntity> adminEntity = Optional.ofNullable(entityManager.find(UserEntity.class, email));
 
-		UserEntity adminEntity = entityManager.find(UserEntity.class, email);
-		System.out.println(adminEntity == null);
-		if (adminEntity != null && adminEntity.getUserType().toLowerCase().equals("admin")) {
-			System.out.println(password);
-			password = adminEntity.getPassword();
-		}
+		if (adminEntity.isPresent())
+			if (adminEntity.get().getUserType().toLowerCase().equals("admin"))
+				password = adminEntity.get().getPassword();
 
 		return password;
 	}
 
 	@Override
 	public User getAdminByEmailId(String email) throws Exception {
-
 		Query query = entityManager.createQuery("select u from UserEntity u where u.email =?1 and u.userType='ADMIN'");
 		query.setParameter(1, email);
-		UserEntity adminEntity = (UserEntity) query.getSingleResult();
+		User admin = null;
+		Optional<UserEntity> adminEntity = Optional.ofNullable((UserEntity) query.getSingleResult());
 
-		User admin = new User();
-		admin.setEmail(adminEntity.getEmail());
-		admin.setUsername(adminEntity.getUsername());
+		if (adminEntity.isPresent()) {
+			admin = new User();
+			admin.setEmail(adminEntity.get().getEmail());
+			admin.setUsername(adminEntity.get().getUsername());
+		}
 
 		return admin;
 	}
@@ -54,9 +54,9 @@ public class AdminDAOImpl implements AdminDAO {
 
 		Query query = entityManager.createQuery("select u from UserEntity u where u.email = :email");
 		query.setParameter("email", email);
-		List<UserEntity> adminEntities = query.getResultList();
+		Optional<List<UserEntity>> adminEntities = Optional.ofNullable(query.getResultList());
 
-		if (adminEntities.isEmpty())
+		if (adminEntities.isPresent() && adminEntities.get().isEmpty())
 			flag = true;
 
 		return flag;
@@ -64,9 +64,7 @@ public class AdminDAOImpl implements AdminDAO {
 
 	@Override
 	public String registerNewAdmin(User admin) {
-
 		String registeredWithEmailId = null;
-
 		UserEntity adminEntity = new UserEntity();
 
 		adminEntity.setEmail(admin.getEmail().toLowerCase());

@@ -1,6 +1,7 @@
 package com.infy.apartment101.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -24,11 +25,11 @@ public class CustomerDAOImpl implements CustomerDAO {
 		Query query = entityManager.createQuery("select u from UserEntity u where u.email = '" + email
 				+ "' and u.password = '" + password + "' and u.userType='CUSTOMER' ");
 
-		List<UserEntity> customerEntities = query.getResultList();
-		if (customerEntities.isEmpty())
+		Optional<List<UserEntity>> customerEntities = Optional.ofNullable(query.getResultList());
+		if (customerEntities.isPresent() && customerEntities.get().isEmpty())
 			return null;
 
-		return customerEntities.get(0).getEmail();
+		return customerEntities.get().get(0).getEmail();
 	}
 
 	@Override
@@ -36,9 +37,9 @@ public class CustomerDAOImpl implements CustomerDAO {
 
 		String password = null;
 		email = email.toLowerCase();
-		UserEntity customerEntity = entityManager.find(UserEntity.class, email);
-		if (customerEntity != null) {
-			password = customerEntity.getPassword();
+		Optional<UserEntity> customerEntity = Optional.ofNullable(entityManager.find(UserEntity.class, email));
+		if (customerEntity.isPresent()) {
+			password = customerEntity.get().getPassword();
 		}
 
 		return password;
@@ -50,13 +51,13 @@ public class CustomerDAOImpl implements CustomerDAO {
 		User customer = null;
 		email = email.toLowerCase();
 
-		UserEntity customerEntity = entityManager.find(UserEntity.class, email);
-		if (customerEntity != null && customerEntity.getUserType().equals("CUSTOMER")) {
+		Optional<UserEntity> customerEntity = Optional.ofNullable(entityManager.find(UserEntity.class, email));
+		if (customerEntity.isPresent() && customerEntity.get().getUserType().equals("CUSTOMER")) {
 			customer = new User();
-			customer.setEmail(customerEntity.getEmail());
-			customer.setUsername(customerEntity.getUsername());
-			customer.setUserType(customerEntity.getUserType());
-			customer.setPassword(customerEntity.getPassword());
+			customer.setEmail(customerEntity.get().getEmail());
+			customer.setUsername(customerEntity.get().getUsername());
+			customer.setUserType(customerEntity.get().getUserType());
+			customer.setPassword(customerEntity.get().getPassword());
 
 		}
 
@@ -68,11 +69,11 @@ public class CustomerDAOImpl implements CustomerDAO {
 
 		Boolean flag = false;
 
-		UserEntity customerEntity = null;
+		Optional<UserEntity> customerEntity = null;
 
-		customerEntity = entityManager.find(UserEntity.class, email);
+		customerEntity = Optional.ofNullable(entityManager.find(UserEntity.class, email));
 
-		if (customerEntity == null)
+		if (!customerEntity.isPresent())
 			flag = true;
 
 		return flag;

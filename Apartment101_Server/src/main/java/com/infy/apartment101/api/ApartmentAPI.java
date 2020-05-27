@@ -1,6 +1,7 @@
 package com.infy.apartment101.api;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,9 +36,6 @@ public class ApartmentAPI {
 	@PostMapping(value = "addApartment")
 	public ResponseEntity<String> addApartment(@RequestBody Apartment apt) throws Exception {
 		try {
-			System.out.println(apt.getAptType());
-			System.out.println(apt.getNoOfBaths());
-			System.out.println(apt.getNoOfRooms());
 			logger.info("Adding apartment, apartment type: " + apt.getAptType() + ", apartment flooring: "
 					+ apt.getTypeOfFlooring() + ", apartment level: " + apt.getAptLevel());
 
@@ -58,7 +56,7 @@ public class ApartmentAPI {
 		try {
 			logger.info("Getting all apartments");
 
-			List<Apartment> aList = apartmentService.getAllApts();
+			List<Apartment> aList = apartmentService.getAllApts().collect(Collectors.toList());
 
 			logger.info(environment.getProperty("ApartmentAPI.GET_ALL_APARTMENTS_SUCCESS"));
 			return new ResponseEntity<List<Apartment>>(aList, HttpStatus.OK);
@@ -104,8 +102,8 @@ public class ApartmentAPI {
 	}
 
 	/*
-	 * http://localhost:8080/Verizon_Server/ApartmentAPI/getApts Returns All
-	 * Available Apartments
+	 * http://localhost:8080/Apartment101_Server/ApartmentAPI/getApts/ Returns
+	 * All Available Apartments
 	 */
 	@PostMapping(value = "getApts")
 	public ResponseEntity<List<Apartment>> getApts() {

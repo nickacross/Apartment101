@@ -1,6 +1,7 @@
 package com.infy.apartment101.service;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 	}
 
 	@Override
-	public List<Apartment> getAllApts() throws Exception {
+	public Stream<Apartment> getAllApts() throws Exception {
 		return apartmentDAO.getAllApts();
 	}
 
@@ -39,7 +40,13 @@ public class ApartmentServiceImpl implements ApartmentService {
 	public Integer modifyAvailability(Integer aptNo, Integer availability) throws Exception {
 		if (availability == null)
 			throw new Exception("ApartmentService.NULL_AVAILABILITY");
-		return apartmentDAO.modifyAvailability(aptNo, availability);
+
+		Integer result = apartmentDAO.modifyAvailability(aptNo, availability);
+
+		if (result == -1)
+			throw new Exception("ApartmentService.APARTMENT_DOES_NOT_EXIST");
+
+		return result;
 	}
 
 	@Override

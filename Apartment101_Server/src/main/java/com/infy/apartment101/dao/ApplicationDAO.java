@@ -1,11 +1,11 @@
 package com.infy.apartment101.dao;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 import com.infy.apartment101.model.Application;
 
 public interface ApplicationDAO {
-	public List<Application> getAllApplications() throws Exception;
+	public Stream<Application> getAllApplications() throws Exception;
 
 	public Integer approveApplication(Integer aptNo) throws Exception;
 

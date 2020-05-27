@@ -3,7 +3,8 @@ package com.infy.apartment101.dao;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -39,22 +40,23 @@ public class ApartmentDAOImpl implements ApartmentDAO {
 
 	// Allow empty list
 	@Override
-	public List<Apartment> getAllApts() throws Exception {
+	public Stream<Apartment> getAllApts() throws Exception {
 		Query q = entityManager.createQuery("select a from ApartmentEntity a");
 
 		@SuppressWarnings("unchecked")
-		List<ApartmentEntity> aptEntityList = q.getResultList();
+		Optional<List<ApartmentEntity>> aptEntityList = Optional.ofNullable(q.getResultList());
 
 		List<Apartment> aptList = new ArrayList<>();
 
 		// Check if apartment entity list is empty
-		if (!aptEntityList.isEmpty()) {
+		if (aptEntityList.isPresent() && !aptEntityList.get().isEmpty()) {
 			User u;
 			Apartment apt;
 			Application app;
 			List<Application> appList = null;
 			List<ApplicationEntity> appEntityList;
-			for (ApartmentEntity aptEntity : aptEntityList) {
+
+			for (ApartmentEntity aptEntity : aptEntityList.get()) {
 				apt = new Apartment();
 				appList = new ArrayList<>();
 				appEntityList = aptEntity.getAppEntityList();
@@ -90,27 +92,52 @@ public class ApartmentDAOImpl implements ApartmentDAO {
 			}
 		}
 
-		// Sort by apartment number
-		aptList = aptList.stream().sorted(Comparator.comparing(Apartment::getAptNo)).collect(Collectors.toList());
-		return aptList;
+		// Return stream, sorted by apartment number
+		return aptList.stream().sorted(Comparator.comparing(Apartment::getAptNo));
 	}
 
 	@Override
 	public List<Apartment> getApts() throws Exception {
-		Query query = entityManager.createQuery("select c from ApartmentEntity c where c.availability = :availability");
-		query.setParameter("availability", 1);
+		List<Apartment> aptList = null;
+		Query query = entityManager.createQuery("select a from ApartmentEntity a");
 
 		@SuppressWarnings("unchecked")
-		List<Apartment> appEntities = query.getResultList();
+		List<ApartmentEntity> aptEntities = query.getResultList();
 
-		return appEntities;
+		if (!aptEntities.isEmpty())
+			aptList = new ArrayList<>();
+
+		Apartment apt = null;
+		for (ApartmentEntity aptEntity : aptEntities) {
+			apt = new Apartment();
+			apt.setAptLevel(aptEntity.getAptLevel());
+			apt.setAptNo(aptEntity.getAptNo());
+			apt.setAptType(aptEntity.getAptType());
+			apt.setAvailability(aptEntity.getAvailability());
+			apt.setNoOfBaths(aptEntity.getNoOfBaths());
+			apt.setNoOfRooms(aptEntity.getNoOfRooms());
+			apt.setTypeOfFlooring(aptEntity.getTypeOfFlooring());
+
+			if (apt.getAvailability().equals(1))
+				aptList.add(apt);
+		}
+
+		return aptList;
+		// Query query = entityManager.createQuery("select c from
+		// ApartmentEntity c where c.availability = :availability");
+		// query.setParameter("availability", 1);
+		//
+		// @SuppressWarnings("unchecked")
+		// List<Apartment> appEntities = query.getResultList();
+		//
+		// return appEntities;
 	}
 
 	@Override
 	public Apartment getAptByAptNo(Integer aptNo) throws Exception {
-		ApartmentEntity aptEntity = entityManager.find(ApartmentEntity.class, aptNo);
+		Optional<ApartmentEntity> aptEntity = Optional.ofNullable(entityManager.find(ApartmentEntity.class, aptNo));
 
-		if (aptEntity == null)
+		if (!aptEntity.isPresent())
 			return null;
 
 		Apartment apt = new Apartment();
@@ -118,7 +145,7 @@ public class ApartmentDAOImpl implements ApartmentDAO {
 		User u = null;
 		Application app = null;
 		List<Application> appList = new ArrayList<>();
-		List<ApplicationEntity> appEntityList = aptEntity.getAppEntityList();
+		List<ApplicationEntity> appEntityList = aptEntity.get().getAppEntityList();
 
 		// Check if application entity list is empty
 		if (!appEntityList.isEmpty())
@@ -138,22 +165,26 @@ public class ApartmentDAOImpl implements ApartmentDAO {
 			}
 
 		apt.setAppList(appList);
-		apt.setAptLevel(aptEntity.getAptLevel());
-		apt.setAptNo(aptEntity.getAptNo());
-		apt.setAptType(aptEntity.getAptType());
-		apt.setAvailability(aptEntity.getAvailability());
-		apt.setNoOfBaths(aptEntity.getNoOfBaths());
-		apt.setNoOfRooms(aptEntity.getNoOfRooms());
-		apt.setTypeOfFlooring(aptEntity.getTypeOfFlooring());
+		apt.setAptLevel(aptEntity.get().getAptLevel());
+		apt.setAptNo(aptEntity.get().getAptNo());
+		apt.setAptType(aptEntity.get().getAptType());
+		apt.setAvailability(aptEntity.get().getAvailability());
+		apt.setNoOfBaths(aptEntity.get().getNoOfBaths());
+		apt.setNoOfRooms(aptEntity.get().getNoOfRooms());
+		apt.setTypeOfFlooring(aptEntity.get().getTypeOfFlooring());
 		return apt;
 	}
 
 	@Override
 	public Integer modifyAvailability(Integer aptNo, Integer availability) throws Exception {
-		ApartmentEntity aptEntity = entityManager.find(ApartmentEntity.class, aptNo);
-		aptEntity.setAvailability(availability);
-		entityManager.persist(aptEntity);
-		return aptEntity.getAvailability();
+		Optional<ApartmentEntity> aptEntity = Optional.ofNullable(entityManager.find(ApartmentEntity.class, aptNo));
+
+		if (!aptEntity.isPresent())
+			return -1;
+
+		aptEntity.get().setAvailability(availability);
+		entityManager.persist(aptEntity.get());
+		return aptEntity.get().getAvailability();
 	}
 
 }
