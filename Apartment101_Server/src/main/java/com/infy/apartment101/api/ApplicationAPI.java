@@ -30,7 +30,7 @@ public class ApplicationAPI {
 	@Autowired
 	private Environment environment;
 
-	static Logger logger = LogManager.getLogger(ApartmentAPI.class.getName());
+	static Logger logger = LogManager.getLogger(ApartmentAPI.class);
 
 	@GetMapping(value = "approveApplication/{appId}")
 	public ResponseEntity<String> approveApplication(@PathVariable("appId") Integer appId) {

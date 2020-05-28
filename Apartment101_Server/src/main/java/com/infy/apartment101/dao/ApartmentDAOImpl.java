@@ -123,14 +123,6 @@ public class ApartmentDAOImpl implements ApartmentDAO {
 		}
 
 		return aptList;
-		// Query query = entityManager.createQuery("select c from
-		// ApartmentEntity c where c.availability = :availability");
-		// query.setParameter("availability", 1);
-		//
-		// @SuppressWarnings("unchecked")
-		// List<Apartment> appEntities = query.getResultList();
-		//
-		// return appEntities;
 	}
 
 	@Override

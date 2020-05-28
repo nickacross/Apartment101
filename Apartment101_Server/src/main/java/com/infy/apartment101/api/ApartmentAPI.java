@@ -31,7 +31,7 @@ public class ApartmentAPI {
 	@Autowired
 	private Environment environment;
 
-	static Logger logger = LogManager.getLogger(ApartmentAPI.class.getName());
+	static Logger logger = LogManager.getLogger(ApartmentAPI.class);
 
 	@PostMapping(value = "addApartment")
 	public ResponseEntity<String> addApartment(@RequestBody Apartment apt) throws Exception {
@@ -105,7 +105,7 @@ public class ApartmentAPI {
 	 * http://localhost:8080/Apartment101_Server/ApartmentAPI/getApts/ Returns
 	 * All Available Apartments
 	 */
-	@PostMapping(value = "getApts")
+	@GetMapping(value = "getApts")
 	public ResponseEntity<List<Apartment>> getApts() {
 		try {
 			return new ResponseEntity<List<Apartment>>(apartmentService.getApts(), HttpStatus.OK);

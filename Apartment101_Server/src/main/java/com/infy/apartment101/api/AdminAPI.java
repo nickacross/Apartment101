@@ -29,7 +29,7 @@ public class AdminAPI {
 	@Autowired
 	private Environment environment;
 
-	static Logger logger = LogManager.getLogger(AdminAPI.class.getName());
+	static Logger logger = LogManager.getLogger(AdminAPI.class);
 
 	@PostMapping(value = "registerAdmin")
 	public ResponseEntity<String> registerAdmin(@RequestBody User admin) throws Exception {

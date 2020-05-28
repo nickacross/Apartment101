@@ -5,6 +5,7 @@ import { Application } from './application'
 import { Observable, Subscription } from 'rxjs';
 
 import { User } from 'src/app/shared/models/user';
+import { Apartment } from 'src/app/shared/models/apartment';
 
 @Component({
   selector: 'app-view-available-apartments',

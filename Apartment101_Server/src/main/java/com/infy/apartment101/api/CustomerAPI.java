@@ -26,7 +26,7 @@ public class CustomerAPI {
 	@Autowired
 	private Environment environment;
 
-	static Logger logger = LogManager.getLogger(CustomerAPI.class.getName());
+	static Logger logger = LogManager.getLogger(CustomerAPI.class);
 
 	@PostMapping(value = "/registerCustomer")
 	public ResponseEntity<String> registerCustomer(@RequestBody User customer) throws Exception {
