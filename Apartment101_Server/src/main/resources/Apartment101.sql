@@ -47,10 +47,13 @@ insert into vgp_user (username, password, email, user_type) values ('test1', '67
 -- Test@2
 insert into vgp_user (username, password, email, user_type) values ('test2', '0c4e6700d91615d0c955abe0f9971c4eef6b6c1b4679f085d6bd8a5c6a7f6a87', 'test2@gmail.com', 'ADMIN');
 
+
 -- Test@3
 insert into vgp_user (username, password, email, user_type) values ('test3', 'Test@3', 'test3@gmail.com', 'CUSTOMER');
 -- Test@4
 insert into vgp_user (username, password, email, user_type) values ('test4', 'Test@4', 'test4@gmail.com', 'CUSTOMER');
+-- Test@5
+insert into vgp_user (username, password, email, user_type) values ('test5', 'Test@5', 'test5@gmail.com', 'CUSTOMER');
 
 insert into vgp_apartment (apt_type, no_of_rooms, no_of_baths, apt_no, apt_level, type_of_flooring, availability) values ('1B1Bath', 1, 1, 1, 1, 'Linoleum', 1);
 insert into vgp_apartment (apt_type, no_of_rooms, no_of_baths, apt_no, apt_level, type_of_flooring, availability) values ('2B2Bath', 2, 2, 2, 1, 'Carpet', 1);
@@ -58,7 +61,7 @@ insert into vgp_apartment (apt_type, no_of_rooms, no_of_baths, apt_no, apt_level
 insert into vgp_application (app_id, apt_no, status, user_email) values (3, 1, 1, 'test3@gmail.com');
 insert into vgp_application (app_id, apt_no, status, user_email) values (4, 2, 0, 'test3@gmail.com');
 insert into vgp_application (app_id, apt_no, status, user_email) values (5, 1, 0, 'test4@gmail.com');
-insert into vgp_application (app_id, apt_no, status, user_email) values (6, 2, 0, 'test4@gmail.com');
+insert into vgp_application (app_id, apt_no, status, user_email) values (6, 2, 0, 'test5@gmail.com');
 
 --select * from VGP_APARTMENT;
 --select * from vgp_application;
