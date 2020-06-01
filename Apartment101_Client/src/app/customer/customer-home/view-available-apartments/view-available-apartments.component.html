@@ -15,7 +15,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let apartment of apartments | async; let i = index">
+          <tr *ngFor="let apartment of apartments | async;">
             <th scope="row">{{apartment.aptNo}}</th>
             <td>{{apartment.noOfRooms}}</td>
             <td>{{apartment.noOfBaths}}</td>
