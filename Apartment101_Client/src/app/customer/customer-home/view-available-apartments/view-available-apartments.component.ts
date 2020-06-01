@@ -23,18 +23,34 @@ export class ViewAvailableApartmentsComponent implements OnInit {
   email;
   errorMsg; 
   success: number;
-  list = new Array<number>();
-  
-  
+
+  apartmentList: any[];
+  list = new Array<any>();
+
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    this.getApartments();
     this.currentUser = JSON.parse(sessionStorage.getItem("customer"));
+    this.checkApartments();
+    this.getApartments();
   }
 
   getApartments(){
     this.apartments = this.http.get(this._url + '/ApartmentAPI/getApts');
+  }
+
+  checkApartments(){
+    this.http.get<any[]>(this._url + '/ApplicationAPI/allMyApp/'+this.currentUser.email+'/check').subscribe(
+       data => {
+          this.apartmentList = data;
+          //console.log(this.apartmentList[0].apartment.aptNo)
+          //console.log(this.apartmentList.length)
+          for(let i = 0; i < this.apartmentList.length; i++){
+            this.list.push(this.apartmentList[i].apartment.aptNo)
+          }
+       } 
+    );
+
   }
 
   newApp(apt: Apartment){
@@ -70,7 +86,5 @@ export class ViewAvailableApartmentsComponent implements OnInit {
       JSON.stringify(data),
       {headers: this.headers, responseType: 'text' as 'json'}
     );
-
-
   }
 }
