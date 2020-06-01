@@ -65,5 +65,14 @@ public class ApplicationAPI {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, environment.getProperty(e.getMessage()));
 		}
 	}
+	
+	@GetMapping(value = "allMyApp/{email}/check")
+	public ResponseEntity<List<Application>> allMyApp(@PathVariable("email") String email) throws Exception {
+		try {
+			return new ResponseEntity<List<Application>>(applicationService.getAllMyApplications(email), HttpStatus.OK);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, environment.getProperty(e.getMessage()));
+		}
+	}
 
 }
