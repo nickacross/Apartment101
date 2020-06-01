@@ -104,4 +104,48 @@ public class ApplicationDAOImpl implements ApplicationDAO {
 		add = applicationEntity.getUserEntity().getEmail();
 		return add;
 	}
+	
+	@Override
+	public List<Application> getAllMyApplications(String email) throws Exception {
+		List<Application> aList = null;
+		Query q = entityManager.createQuery("SELECT a FROM ApplicationEntity a");
+		List<ApplicationEntity> appEntityList = q.getResultList();
+
+		if (!appEntityList.isEmpty())
+			aList = new ArrayList<>();
+
+		Application app = null;
+		User u = null;
+		Apartment apt = null;
+		for (ApplicationEntity appEntity : appEntityList) {
+			app = new Application();
+			app.setAppId(appEntity.getAppId());
+			app.setStatus(appEntity.getStatus());
+
+			apt = new Apartment();
+			apt.setAptLevel(appEntity.getApartmentEntity().getAptLevel());
+			apt.setAptNo(appEntity.getApartmentEntity().getAptNo());
+			apt.setAptType(appEntity.getApartmentEntity().getAptType());
+			apt.setAvailability(appEntity.getApartmentEntity().getAvailability());
+			apt.setNoOfBaths(appEntity.getApartmentEntity().getNoOfBaths());
+			apt.setNoOfRooms(appEntity.getApartmentEntity().getNoOfRooms());
+			apt.setTypeOfFlooring(appEntity.getApartmentEntity().getTypeOfFlooring());
+
+			app.setApartment(apt);
+
+			// Not getting username and password for security
+			u = new User();
+			u.setEmail(appEntity.getUserEntity().getEmail());
+			u.setUserType(appEntity.getUserEntity().getUserType());
+			
+			app.setUser(u);
+
+			if(u.getEmail().equals(email)) {
+				aList.add(app);
+			}
+				
+		}
+
+		return aList;
+	}
 }
