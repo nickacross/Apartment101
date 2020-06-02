@@ -30,7 +30,7 @@ public class ApplicationAPI {
 	@Autowired
 	private Environment environment;
 
-	static Logger logger = LogManager.getLogger(ApartmentAPI.class.getName());
+	static Logger logger = LogManager.getLogger(ApartmentAPI.class);
 
 	@GetMapping(value = "approveApplication/{appId}")
 	public ResponseEntity<String> approveApplication(@PathVariable("appId") Integer appId) {
@@ -61,6 +61,15 @@ public class ApplicationAPI {
 		try {
 			String registerApp = applicationService.registerNewApp(app);
 			return new ResponseEntity<String>(registerApp, HttpStatus.OK);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, environment.getProperty(e.getMessage()));
+		}
+	}
+	
+	@GetMapping(value = "allMyApp/{email}/check")
+	public ResponseEntity<List<Application>> allMyApp(@PathVariable("email") String email) throws Exception {
+		try {
+			return new ResponseEntity<List<Application>>(applicationService.getAllMyApplications(email), HttpStatus.OK);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, environment.getProperty(e.getMessage()));
 		}

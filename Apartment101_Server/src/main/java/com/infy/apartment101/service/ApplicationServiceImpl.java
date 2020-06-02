@@ -35,4 +35,12 @@ public class ApplicationServiceImpl implements ApplicationService {
 		String add = applicationDAO.registerNewApp(app);
 		return add;
 	}
+	
+	@Override
+	public List<Application> getAllMyApplications(String email) throws Exception {
+		List<Application> aList = applicationDAO.getAllMyApplications(email);
+		if (aList == null)
+			throw new Exception("ApplicationService.NULL_APPLICATION_LIST");
+		return aList;
+	}
 }

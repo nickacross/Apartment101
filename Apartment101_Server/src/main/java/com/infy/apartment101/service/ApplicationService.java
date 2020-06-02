@@ -10,4 +10,6 @@ public interface ApplicationService {
 	public Integer approveApplication(Integer aptNo) throws Exception;
 
 	public String registerNewApp(Application app) throws Exception;
+	
+	public List<Application> getAllMyApplications(String email) throws Exception;
 }

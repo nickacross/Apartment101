@@ -13,7 +13,7 @@ get http://localhost:8080/Apartment101_Server/ApartmentAPI/getAptByAptNo/1
 get http://localhost:8080/Apartment101_Server/ApartmentAPI/getAptByAptNo/2
 
 get http://localhost:8080/Apartment101_Server/ApartmentAPI/getAllApts
-post http://localhost:8080/Apartment101_Server/ApartmentAPI/getApts
+get http://localhost:8080/Apartment101_Server/ApartmentAPI/getApts
 
 get http://localhost:8080/Apartment101_Server/ApartmentAPI/modifyAptAvailability/1/1
 get http://localhost:8080/Apartment101_Server/ApartmentAPI/modifyAptAvailability/1/0

@@ -6,7 +6,7 @@
     <table class="table table-striped">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">Apartment #</th>
+            <th scope="col">Apartment#</th>
             <th scope="col">Bedroom(s)</th>
             <th scope="col">Bathroom(s)</th>
             <th scope="col">Level</th>
@@ -15,14 +15,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let apartment of apartments | async">
+          <tr *ngFor="let apartment of apartments | async;">
             <th scope="row">{{apartment.aptNo}}</th>
             <td>{{apartment.noOfRooms}}</td>
             <td>{{apartment.noOfBaths}}</td>
             <td>{{apartment.aptLevel}}</td>
             <td>{{apartment.typeOfFlooring}}</td>
-            <td *ngIf="!success"> <button type="button" class="btn btn-success" (click)="newApp(apartment.aptNo);">Apply Now</button> </td>
-            <td *ngIf="success"> <button type="button" class="btn btn-secondary" >Applied</button> </td>
+            <td><button [disabled]="list.indexOf(apartment.aptNo)>=0" type="button" class="btn btn-success" (click)="newApp(apartment);">Apply</button> </td>
           </tr>
         </tbody>
       </table>
