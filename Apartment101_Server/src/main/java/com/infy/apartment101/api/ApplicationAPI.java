@@ -22,57 +22,40 @@ import com.infy.apartment101.service.ApplicationService;
 
 @CrossOrigin
 @RestController
-@RequestMapping("ApplicationAPI")
-public class ApplicationAPI {
+@RequestMapping(value = "admin")
+public class AdminAPI {
 	@Autowired
-	private ApplicationService applicationService;
+	private AdminService adminService;
+
+	@Autowired
+	private AdminService adminLoginService;
 
 	@Autowired
 	private Environment environment;
 
-	static Logger logger = LogManager.getLogger(ApartmentAPI.class);
+	static Logger logger = LogManager.getLogger(AdminAPI.class.getName());
 
-	@GetMapping(value = "approveApplication/{appId}")
-	public ResponseEntity<String> approveApplication(@PathVariable("appId") Integer appId) {
-		try {
-			logger.info("Approving application, application Id: " + appId);
+	@PostMapping(value = "registerAdmin")
+	public ResponseEntity<String> registerAdmin(@RequestBody User admin) throws Exception {
+		logger.info("ADMIN TRYING TO REGISTER. ADMIN EMAIL ID: " + admin.getEmail());
 
-			applicationService.approveApplication(appId);
-			String message = "Application approved successfully, application Id: " + appId;
+		String registeredWithEmailID = adminService.registerNewAdmin(admin);
 
-			logger.info(message);
-			return new ResponseEntity<String>(message, HttpStatus.ACCEPTED);
-		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, environment.getProperty(e.getMessage()));
-		}
-	}
+		logger.info("ADMIN REGISTRATION SUCCESSFUL. ADMIN EMAIL ID: " + admin.getEmail());
 
-	@GetMapping(value = "allApp")
-	public ResponseEntity<List<Application>> allApp() throws Exception {
-		try {
-			return new ResponseEntity<List<Application>>(applicationService.getAllApplications(), HttpStatus.OK);
-		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, environment.getProperty(e.getMessage()));
-		}
-	}
+		registeredWithEmailID = environment.getProperty("AdminAPI.ADMIN_REGISTRATION_SUCCESS") + registeredWithEmailID;
 
-	@PostMapping(value = "newApp")
-	public ResponseEntity<String> newApp(@RequestBody Application app) throws Exception {
-		try {
-			String registerApp = applicationService.registerNewApp(app);
-			return new ResponseEntity<String>(registerApp, HttpStatus.OK);
-		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, environment.getProperty(e.getMessage()));
-		}
+		return new ResponseEntity<String>(registeredWithEmailID, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "allMyApp/{email}/check")
-	public ResponseEntity<List<Application>> allMyApp(@PathVariable("email") String email) throws Exception {
-		try {
-			return new ResponseEntity<List<Application>>(applicationService.getAllMyApplications(email), HttpStatus.OK);
-		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, environment.getProperty(e.getMessage()));
-		}
-	}
+	@PostMapping(value = "adminLogin")
+	public ResponseEntity<User> authenticateSeller(@RequestBody User admin) throws Exception {
+		logger.info("ADMIN TRYING TO LOGIN. ADMIN EMAIL ID: " + admin.getEmail());
 
+		User adminFromDB = adminLoginService.authenticateAdmin(admin.getEmail(), admin.getPassword());
+
+		logger.info("ADMIN LOGIN SUCCESSFUL. ADMIN EMAIL ID: " + admin.getEmail());
+
+		return new ResponseEntity<User>(adminFromDB, HttpStatus.OK);
+	}
 }
