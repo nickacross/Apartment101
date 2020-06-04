@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.infy.apartment101.dao.AdminDAO;
+import com.infy.apartment101.exception.UnauthorizedException;
 import com.infy.apartment101.model.User;
 import com.infy.apartment101.utility.HashingUtility;
 import com.infy.apartment101.validator.AdminValidator;
