@@ -8,56 +8,36 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@ApiModel(description = "Application Entity")
 @Entity
 @Table(name = "vgp_application")
+@Getter
+@Setter
+@NoArgsConstructor
 public class ApplicationEntity {
+	@ApiModelProperty(notes = "Application Id", name = "appId", required = true, value = "0")
 	@Id
 	@Column(name = "app_id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer appId;
 
+	@ApiModelProperty(notes = "Application Status", name = "status", required = true, value = "0")
 	@Column
 	private Integer status; // 0 = false, 1 = true
 
+	@ApiModelProperty(notes = "Application Customer", name = "userEntity", required = true)
 	@ManyToOne
 	@JoinColumn(name = "user_email")
 	private UserEntity userEntity;
 
+	@ApiModelProperty(notes = "Apartment", name = "apartmentEntity", required = true)
 	@ManyToOne
 	@JoinColumn(name = "apt_no")
 	private ApartmentEntity apartmentEntity;
-
-	public ApartmentEntity getApartmentEntity() {
-		return apartmentEntity;
-	}
-
-	public void setApartmentEntity(ApartmentEntity apartmentEntity) {
-		this.apartmentEntity = apartmentEntity;
-	}
-
-	public Integer getAppId() {
-		return appId;
-	}
-
-	public void setAppId(Integer appId) {
-		this.appId = appId;
-	}
-
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-
-	public UserEntity getUserEntity() {
-		return userEntity;
-	}
-
-	public void setUserEntity(UserEntity userEntity) {
-		this.userEntity = userEntity;
-	}
-
 }
