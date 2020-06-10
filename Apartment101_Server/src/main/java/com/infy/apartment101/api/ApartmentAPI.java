@@ -51,7 +51,7 @@ public class ApartmentAPI {
 		String message = environment.getProperty("ApartmentAPI.APARTMENT_ADDED_SUCCESS") + result;
 
 		logger.info(message);
-		return new ResponseEntity<String>(message, HttpStatus.OK);
+		return new ResponseEntity<String>(message, HttpStatus.CREATED);
 	}
 
 	@ApiOperation(value = "Get all apartments", response = Iterable.class, tags = "Apartment API")
