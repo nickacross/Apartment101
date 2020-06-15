@@ -59,7 +59,7 @@ public class ApartmentMVCTest {
 		String result = mockMvc
 				.perform(MockMvcRequestBuilders.post("/ApartmentAPI/addApartment/")
 						.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(apt)))
-				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString();
+				.andExpect(MockMvcResultMatchers.status().isCreated()).andReturn().getResponse().getContentAsString();
 
 		Assert.assertTrue(result.contains("Apartment added successfully, apartment no: "));
 	}
